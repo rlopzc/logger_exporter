@@ -101,6 +101,10 @@ defmodule LoggerExporter do
     }
   end
 
+  @doc """
+  Take specified keys from the metadata
+  """
+  @spec take_metadata(keyword(), :all | [atom()]) :: keyword()
   def take_metadata(metadata, :all), do: metadata
 
   def take_metadata(metadata, keys) do
