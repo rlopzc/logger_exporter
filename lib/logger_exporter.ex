@@ -1,7 +1,7 @@
 defmodule LoggerExporter do
   @behaviour :gen_event
 
-  alias LoggerExporter.Batcher
+  alias LoggerExporter.{BasicFormatter, Batcher, Config, Event}
 
   require Logger
 
@@ -12,13 +12,13 @@ defmodule LoggerExporter do
 
   @impl true
   def init(__MODULE__) do
-    config = get_env()
+    config = Config.get_env()
 
     {:ok, init(config, %__MODULE__{})}
   end
 
   def init({__MODULE__, opts}) when is_list(opts) do
-    config = configure_merge(get_env(), opts)
+    config = configure_merge(Config.get_env(), opts)
     {:ok, init(config, %__MODULE__{})}
   end
 
@@ -53,10 +53,6 @@ defmodule LoggerExporter do
 
   ## Helpers
 
-  defp get_env do
-    Application.get_env(:logger, __MODULE__)
-  end
-
   defp meet_level?(_lvl, nil), do: true
 
   defp meet_level?(lvl, min) do
@@ -65,7 +61,7 @@ defmodule LoggerExporter do
 
   defp init(config, state) do
     level = Keyword.get(config, :level, :info)
-    formatter = Keyword.get(config, :formatter)
+    formatter = Keyword.get(config, :formatter, BasicFormatter)
     metadata = Keyword.get(config, :metadata, []) |> configure_metadata()
 
     %{
@@ -82,7 +78,7 @@ defmodule LoggerExporter do
   defp configure_merge(env, options), do: Keyword.merge(env, options, fn _key, _v1, v2 -> v2 end)
 
   defp configure(options, state) do
-    config = configure_merge(get_env(), options)
+    config = configure_merge(Config.get_env(), options)
 
     Application.put_env(:logger, __MODULE__, config)
     init(config, state)
@@ -91,27 +87,23 @@ defmodule LoggerExporter do
   defp log_event(level, msg, ts, md, state) do
     event = format_event(level, msg, ts, md, state)
 
-    Batcher.enqueue(ts, event)
+    Batcher.enqueue(event)
   end
 
   defp format_event(level, msg, ts, md, state) do
-    # TODO: Use formatter and call format_event
-    %{formatter: _formatter, metadata: md_keys} = state
+    %{formatter: formatter, metadata: md_keys} = state
 
-    # unless formatter do
-    #   raise ArgumentError,
-    #         "invalid :formatter option for :logger_exporter application. " <>
-    #           "Expected module name that implements LoggerExporter.Formatter behaviour, "
-    # end
+    log = formatter.format_event(level, msg, ts, md, md_keys)
 
-    "$time [$level] $message $metadata\n"
-    |> Logger.Formatter.compile()
-    |> Logger.Formatter.format(level, msg, ts, take_metadata(md, md_keys))
+    %Event{
+      timestamp_ns: System.os_time(:nanosecond),
+      log: log
+    }
   end
 
-  defp take_metadata(metadata, :all), do: metadata
+  def take_metadata(metadata, :all), do: metadata
 
-  defp take_metadata(metadata, keys) do
+  def take_metadata(metadata, keys) do
     Enum.reduce(keys, [], fn key, acc ->
       case Keyword.fetch(metadata, key) do
         {:ok, val} -> [{key, val} | acc]
