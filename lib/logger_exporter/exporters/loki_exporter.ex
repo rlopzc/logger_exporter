@@ -1,8 +1,6 @@
 defmodule LoggerExporter.Exporters.LokiExporter do
   alias LoggerExporter.{Config, Event}
 
-  @environment_name Mix.env()
-
   @behaviour LoggerExporter.Exporter
 
   def headers do
@@ -15,7 +13,7 @@ defmodule LoggerExporter.Exporters.LokiExporter do
     %{
       streams: [
         %{
-          stream: %{app: Config.app_name(), env: env()},
+          stream: %{app: Config.app_name(), env: Config.environment_name()},
           values: values
         }
       ]
@@ -26,6 +24,4 @@ defmodule LoggerExporter.Exporters.LokiExporter do
   defp event_to_log(%Event{} = event) do
     [event.timestamp_ns, event.log]
   end
-
-  defp env, do: @environment_name
 end
