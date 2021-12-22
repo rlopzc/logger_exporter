@@ -1,7 +1,4 @@
 defmodule LoggerExporter.Config do
-  @doc """
-  Get the app name. This will be sent as a label for `LoggerExporter.Exporters.LokiExporter`
-  """
   def app_name do
     case Keyword.fetch(get_env(), :app_name) do
       {:ok, app} ->
@@ -9,22 +6,27 @@ defmodule LoggerExporter.Config do
 
       :error ->
         raise ArgumentError,
-              "invalid :app_name option for LoggerExporter application."
+              "missing :app_name option for LoggerExporter application. " <>
+                "Set :app_name to label the logs."
     end
   end
 
-  @doc """
-  Get the configured exporter via `config :logger, LoggerExporter, exporter: MyExporter`
+  def environment_name do
+    case Keyword.fetch(get_env(), :environment_name) do
+      {:ok, env} ->
+        env
 
-  Defaults to `LoggerExporter.Exporters.LokiExporter`
-  """
+      :error ->
+        raise ArgumentError,
+              "missing :environment_name option for LoggerExporter application. " <>
+                "Set :environment_name to label the logs."
+    end
+  end
+
   def exporter do
     Keyword.get(get_env(), :exporter, LoggerExporter.Exporters.LokiExporter)
   end
 
-  @doc """
-  Get the configured host via `config :logger, LoggerExporter, host: "http://localhost`
-  """
   def host do
     case Keyword.fetch(get_env(), :host) do
       {:ok, host} ->
@@ -32,21 +34,15 @@ defmodule LoggerExporter.Config do
 
       :error ->
         raise ArgumentError,
-              "invalid :host option for LoggerExporter application. " <>
+              "missing :host option for LoggerExporter application. " <>
                 "Expected an url"
     end
   end
 
-  @doc """
-  Get application environment
-  """
   def get_env do
     Application.get_env(:logger, LoggerExporter, [])
   end
 
-  @doc """
-  Get the url of the service to send the data
-  """
   def url do
     host = host()
 
