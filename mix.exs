@@ -5,7 +5,7 @@ defmodule LoggerExporter.MixProject do
     [
       app: :logger_exporter,
       version: "0.1.0",
-      elixir: "~> 1.13",
+      elixir: "~> 1.12",
       start_permanent: Mix.env() == :prod,
       deps: deps()
     ]
@@ -19,7 +19,7 @@ defmodule LoggerExporter.MixProject do
   defp deps do
     [
       {:jason, "~> 1.2"},
-      {:finch, "~> 0.10"}
+      {:finch, "~> 0.8"}
     ]
   end
 end
