@@ -14,7 +14,7 @@ defmodule LoggerExporter.HTTPClient do
     body = exporter.body(events)
 
     Finch.build(:post, Config.host(), headers, body)
-    |> Finch.request(FinchHTTPClient)
+    |> Finch.request(LoggerExporterFinch)
     |> IO.inspect(label: "response")
   end
 
