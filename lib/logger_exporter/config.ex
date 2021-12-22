@@ -43,4 +43,19 @@ defmodule LoggerExporter.Config do
   def get_env do
     Application.get_env(:logger, LoggerExporter, [])
   end
+
+  @doc """
+  Get the url of the service to send the data
+  """
+  def url do
+    host = host()
+
+    case exporter() do
+      LoggerExporter.Exporters.LokiExporter ->
+        "#{host}/loki/api/v1/push"
+
+      _ ->
+        host
+    end
+  end
 end

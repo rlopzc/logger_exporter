@@ -11,9 +11,11 @@ defmodule LoggerExporter.HTTPClient do
       exporter.headers()
       |> merge_default_headers()
 
-    body = exporter.body(events)
+    body =
+      exporter.body(events)
+      |> Jason.encode!()
 
-    Finch.build(:post, Config.host(), headers, body)
+    Finch.build(:post, Config.url(), headers, body)
     |> Finch.request(LoggerExporterFinch)
     |> IO.inspect(label: "response")
   end
