@@ -6,9 +6,6 @@ defmodule LoggerExporter.Backend do
 
   require Logger
 
-  # TODO: How to disable it in test env? Manage it via Config?
-  # Use like sentry included environments?
-
   defstruct level: nil, metadata: nil, formatter: nil
 
   @impl true
