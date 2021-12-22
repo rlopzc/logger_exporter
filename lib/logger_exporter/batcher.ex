@@ -3,7 +3,7 @@ defmodule LoggerExporter.Batcher do
 
   alias LoggerExporter.{Event, HTTPClient}
 
-  def start_link(_) do
+  def start_link(_opts) do
     GenServer.start_link(__MODULE__, :queue.new(), name: __MODULE__)
   end
 
