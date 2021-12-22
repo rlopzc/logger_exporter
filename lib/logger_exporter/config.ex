@@ -19,7 +19,7 @@ defmodule LoggerExporter.Config do
   Defaults to `LoggerExporter.Exporters.LokiExporter`
   """
   def exporter do
-    Keyword.get(get_env(), :exporter, LokiExporter)
+    Keyword.get(get_env(), :exporter, LoggerExporter.Exporters.LokiExporter)
   end
 
   @doc """
