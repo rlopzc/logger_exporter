@@ -54,4 +54,8 @@ defmodule LoggerExporter.Config do
         host
     end
   end
+
+  def batch_every_ms() do
+    Application.get_env(:segment, :batch_every_ms, 2000)
+  end
 end

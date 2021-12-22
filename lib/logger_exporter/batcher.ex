@@ -1,7 +1,7 @@
 defmodule LoggerExporter.Batcher do
   use GenServer
 
-  alias LoggerExporter.{Event, HTTPClient}
+  alias LoggerExporter.{Config, Event, HTTPClient}
 
   def start_link(_opts) do
     GenServer.start_link(__MODULE__, :queue.new(), name: __MODULE__)
@@ -44,6 +44,6 @@ defmodule LoggerExporter.Batcher do
   # Helpers
 
   defp schedule_batch_send do
-    Process.send_after(self(), :process_batch, 5000)
+    Process.send_after(self(), :process_batch, Config.batch_every_ms())
   end
 end
