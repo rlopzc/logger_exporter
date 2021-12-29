@@ -7,7 +7,7 @@ defmodule LoggerExporter.Exporters.Exporter do
   alias LoggerExporter.Event
 
   @doc """
-  Authorization headers
+  Headers
 
   [{"Content-Type", "application/json"}] is added by default
   """
