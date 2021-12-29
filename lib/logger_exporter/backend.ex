@@ -1,8 +1,8 @@
 defmodule LoggerExporter.Backend do
   @behaviour :gen_event
 
-  alias LoggerExporter.{Batcher, Config, Event}
   alias LoggerExporter.Formatters
+  alias LoggerExporter.{Batcher, Config, Event}
 
   require Logger
 

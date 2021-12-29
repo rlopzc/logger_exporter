@@ -1,4 +1,4 @@
-defmodule LoggerExporter.Formatter do
+defmodule LoggerExporter.Formatters.Formatter do
   @moduledoc """
   Behaviour that should be implemented by log formatters.
   Example implementation in `LoggerExporter.Formatters.BasicLogger`

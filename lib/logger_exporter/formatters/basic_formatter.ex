@@ -1,5 +1,5 @@
 defmodule LoggerExporter.Formatters.BasicFormatter do
-  @behaviour LoggerExporter.Formatter
+  @behaviour LoggerExporter.Formatters.Formatter
 
   def format_event(level, msg, ts, md, md_keys) do
     "$time [$level] $message $metadata"

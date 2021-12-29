@@ -1,4 +1,4 @@
-defmodule LoggerExporter.Exporter do
+defmodule LoggerExporter.Exporters.Exporter do
   @moduledoc """
   Behaviour that should be implemented by exporters.
   Example implementation in `LoggerExporter.Exporters.LokiExporter`
@@ -9,7 +9,7 @@ defmodule LoggerExporter.Exporter do
   @doc """
   Authorization headers
 
-  Content-Type: application/json is added by default
+  [{"Content-Type", "application/json"}] is added by default
   """
   @callback headers() :: Mint.Types.headers()
 

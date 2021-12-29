@@ -1,7 +1,7 @@
 defmodule LoggerExporter.Exporters.LokiExporter do
   alias LoggerExporter.{Config, Event}
 
-  @behaviour LoggerExporter.Exporter
+  @behaviour LoggerExporter.Exporters.Exporter
 
   def headers do
     []
