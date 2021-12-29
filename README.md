@@ -1,11 +1,16 @@
 # LoggerExporter
 
-**TODO: Add description**
+Export your logs to the service of your choice.
+
+Supported exporters:
+- Loki
+
+You can implement your own exporter implemeting `LoggerExporter.Exporters.Exporter`
+behaviour
 
 ## Installation
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `logger_exporter` to your list of dependencies in `mix.exs`:
+Add `logger_exporter` to your list of dependencies in `mix.exs`:
 
 ```elixir
 def deps do
@@ -15,7 +20,49 @@ def deps do
 end
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at <https://hexdocs.pm/logger_exporter>.
+## Configuration
 
+- `config :logger, LoggerExporter, :exporter`. Allows selection of a exporter implementation. Defaults to `LoggerExporter.Exporters.LokiExporter`
+- `config :logger, LoggerExporter, :batch_every_ms`. The time (in ms) between every batch request. Default value is 2000 (2 seconds)
+- `config :logger, LoggerExporter, :host`. The host of the service. Required
+- `config :logger, LoggerExporter, :app_name`. The name of the app to use as label for `Loki`. Required if using `LokiExporter`.
+- `config :logger, LoggerExporter, :environment_name`. The name of the environment to use as label for `Loki`. Required if using `LokiExporter`.
+- `config :logger, LoggerExporter, :http_auth`. See below.
+
+### HTPP Auth
+
+Supported authentication methods:
+- Basic:
+  ```elixir
+  config :logger, LoggerExporter,
+    http_auth: {:basic, System.fetch_env!("USER"), System.fetch_env!("PASSWORD")}
+  ```
+
+## Usage in Phoenix
+
+1.  Add the following to deps section of your mix.exs: `{:logger_exporter, "~> 0.1.0"}`
+    and then `mix deps.get`
+2.  Add `LoggerExporter.Backend` to your logger's backends configuration
+    ```
+    config :logger,
+      backends: [:console, LoggerExporter.Backend]
+    ```
+3.  Add config related to the exporter and other fields.
+    ie. for `LokiExporter`
+
+    ```elixir
+    config :logger, LoggerExporter,
+      host: "http://localhost:3100",
+      app_name: "my_app",
+      environment_name: Mix.env()
+    ```
+
+4.  Start the LoggerExporter GenServer in the supervised children list.
+    In `application.ex` add to the children list:
+
+    ```elixir
+    children [
+      ...
+      LoggerExporter
+    ]
+    ```
