@@ -19,7 +19,8 @@ defmodule LoggerExporter.MixProject do
   defp deps do
     [
       {:jason, "~> 1.2"},
-      {:finch, "~> 0.8"}
+      {:finch, "~> 0.8"},
+      {:telemetry, "~> 0.4.2 or ~> 1.0"}
     ]
   end
 end
