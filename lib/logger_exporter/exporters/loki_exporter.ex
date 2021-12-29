@@ -25,7 +25,6 @@ defmodule LoggerExporter.Exporters.LokiExporter do
         }
       ]
     }
-    |> IO.inspect(label: "data to send")
   end
 
   defp event_to_log(%Event{} = event) do
