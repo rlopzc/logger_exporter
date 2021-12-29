@@ -22,12 +22,15 @@ end
 
 ## Configuration
 
+- `config :logger, LoggerExporter, :level`. The logger level to report.
+- `config :logger, LoggerExporter, :formatter`. Allows the selection of a formatter implementation. Defaults to `LoggerExporter.Formatters.BasicFormatter`
+- `config :logger, LoggerExporter, :metadata`. Metadata to log. Defaults to []
 - `config :logger, LoggerExporter, :exporter`. Allows selection of a exporter implementation. Defaults to `LoggerExporter.Exporters.LokiExporter`
 - `config :logger, LoggerExporter, :batch_every_ms`. The time (in ms) between every batch request. Default value is 2000 (2 seconds)
 - `config :logger, LoggerExporter, :host`. The host of the service. Required
-- `config :logger, LoggerExporter, :app_name`. The name of the app to use as label for `Loki`. Required if using `LokiExporter`.
-- `config :logger, LoggerExporter, :environment_name`. The name of the environment to use as label for `Loki`. Required if using `LokiExporter`.
-- `config :logger, LoggerExporter, :http_auth`. See below.
+- `config :logger, LoggerExporter, :app_name`. The name of the app to use as label for `Loki`. Required if using `LokiExporter`
+- `config :logger, LoggerExporter, :environment_name`. The name of the environment to use as label for `Loki`. Required if using `LokiExporter`
+- `config :logger, LoggerExporter, :http_auth`. See below
 
 ### HTPP Auth
 
