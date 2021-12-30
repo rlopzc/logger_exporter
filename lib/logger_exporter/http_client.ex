@@ -36,17 +36,27 @@ defmodule LoggerExporter.HTTPClient do
       {:ok, %Finch.Response{status: status}} when status < 300 ->
         :ok
 
+      {:ok, %Finch.Response{status: status}} when status == 401 ->
+        Logger.error("[LoggerExporter] Exporting logs failed. HTTP Authentication failed")
+
+        :error
+
       {:ok, %Finch.Response{status: status}} when status < 500 ->
         Logger.error(
-          "[LoggerExporter] Batch call of #{length(events)} events failed. JSON too large or invalid"
+          "[LoggerExporter] Exporting #{length(events)} logs failed. JSON too large or invalid"
+        )
+
+        :error
+
+      {:ok, %Finch.Response{}} ->
+        Logger.error(
+          "[LoggerExporter] Exporting #{length(events)} logs failed. External service failure"
         )
 
         :error
 
       {:error, err} ->
-        Logger.error(
-          "[LoggerExporter] Batch call of #{length(events)} events failed. #{inspect(err)}"
-        )
+        Logger.error("[LoggerExporter] Exporting #{length(events)} logs failed. #{inspect(err)}")
 
         :error
     end
