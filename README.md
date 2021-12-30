@@ -2,7 +2,12 @@
 
 Export your logs to the service of your choice.
 
-Supported exporters:
+I created this library because I didn't like the current logger services that Heroku
+provides, and there is no simple way to export logs to a different service.
+
+I wanted a simple way to export my logs to Grafana Loki.
+
+## Supported exporters:
 - Loki
 
 You can implement your own exporter implemeting `LoggerExporter.Exporters.Exporter`
@@ -22,9 +27,11 @@ end
 
 ## Configuration
 
+By default, the timestamp sent for each log to the external service is in utc: `System.os_time(:nanosecond)`
+
 - `config :logger, LoggerExporter, :level`. The logger level to report.
 - `config :logger, LoggerExporter, :formatter`. Allows the selection of a formatter implementation. Defaults to `LoggerExporter.Formatters.BasicFormatter`
-- `config :logger, LoggerExporter, :metadata`. Metadata to log. Defaults to []
+- `config :logger, LoggerExporter, :metadata`. Metadata to log. Defaults to `[]`
 - `config :logger, LoggerExporter, :exporter`. Allows selection of a exporter implementation. Defaults to `LoggerExporter.Exporters.LokiExporter`
 - `config :logger, LoggerExporter, :batch_every_ms`. The time (in ms) between every batch request. Default value is 2000 (2 seconds)
 - `config :logger, LoggerExporter, :host`. The host of the service. Required
@@ -36,6 +43,7 @@ end
 
 Supported authentication methods:
 - Basic:
+
   ```elixir
   config :logger, LoggerExporter,
     http_auth: {:basic, System.fetch_env!("USER"), System.fetch_env!("PASSWORD")}
@@ -45,11 +53,14 @@ Supported authentication methods:
 
 1.  Add the following to deps section of your mix.exs: `{:logger_exporter, "~> 0.1.0"}`
     and then `mix deps.get`
+
 2.  Add `LoggerExporter.Backend` to your logger's backends configuration
+
     ```
     config :logger,
       backends: [:console, LoggerExporter.Backend]
     ```
+
 3.  Add config related to the exporter and other fields.
     ie. for `LokiExporter`
 
@@ -57,7 +68,9 @@ Supported authentication methods:
     config :logger, LoggerExporter,
       host: "http://localhost:3100",
       app_name: "my_app",
-      environment_name: Mix.env()
+      environment_name: Mix.env(),
+      http_auth: {:basic, System.fetch_env!("LOKI_USER"), System.fetch_env!("LOKI_PASSWORD")},
+      metadata: [:request_id, :extra]
     ```
 
 4.  Start the LoggerExporter GenServer in the supervised children list.
@@ -69,3 +82,49 @@ Supported authentication methods:
       LoggerExporter
     ]
     ```
+
+## JSON Formatter
+
+If you want to log in JSON format, you can use the formatter of another library:
+[logger_json](https://github.com/Nebo15/logger_json)
+
+You can configure it like this:
+```elixir
+config :logger, LoggerExporter,
+  formatter: LoggerJSON.Formatters.BasicLogger
+```
+
+And it will work out of the box :)
+
+## Telemetry
+
+Telemetry integration for logging and error reporting.
+
+There is a default logger for you to attach. It logs when the `status` is `:error`
+
+In your `application.ex`
+
+```elixir
+:ok = LoggerExporter.Telemetry.attach_default_logger()
+```
+
+### HTTP Post batch events
+
+LoggerExporter emits the following events for processing each batch (sending it through http)
+
+- `[:logger_exporter, :batch, :start]` -- starting to process the events
+- `[:logger_exporter, :batch, :stop]` -- after the events is processed
+- `[:logger_exporter, :batch, :exception]` -- after the events are processed
+
+The following chart shows which metadata you can expect for each event:
+
+| event        | measures       | metadata                               |
+| ------------ | -------------- | ---------                              |
+| `:start`     | `:system_time` | `:events`                              |
+| `:stop`      | `:duration`    | `:events, :status, :response`          |
+| `:exception` | `:duration`    | `:events, :kind, :reason, :stacktrace` |
+
+Metadata
+* `:events` - the list of `LoggerExporter.Event` processed
+* `:status` - either `:ok` or `:error`
+* `:response` - information of the response. Is a `Finch.Response` struct
