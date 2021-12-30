@@ -4,14 +4,7 @@ defmodule LoggerExporter.Exporters.LokiExporter do
   @behaviour LoggerExporter.Exporters.Exporter
 
   def headers do
-    case Config.http_auth() do
-      {:basic, user, password} ->
-        creds = Base.encode64("#{user}:#{password}")
-        [{"Authorization", "Basic #{creds}"}]
-
-      _ ->
-        []
-    end
+    []
   end
 
   def body(events) do

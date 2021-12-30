@@ -63,8 +63,19 @@ defmodule LoggerExporter.HTTPClient do
   end
 
   defp merge_default_headers(headers) do
-    [
-      {"Content-Type", "application/json"}
-    ] ++ headers
+    [{"Content-Type", "application/json"}] ++
+      auth_header() ++
+      headers
+  end
+
+  defp auth_header do
+    case Config.http_auth() do
+      {:basic, user, password} ->
+        creds = Base.encode64("#{user}:#{password}")
+        [{"Authorization", "Basic #{creds}"}]
+
+      _ ->
+        []
+    end
   end
 end
