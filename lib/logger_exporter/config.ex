@@ -62,4 +62,8 @@ defmodule LoggerExporter.Config do
   def http_auth do
     Keyword.get(get_env(), :http_auth)
   end
+
+  def send_to_http do
+    Keyword.get(get_env(), :send_to_http, true)
+  end
 end

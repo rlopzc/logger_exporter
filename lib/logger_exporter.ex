@@ -1,7 +1,4 @@
 defmodule LoggerExporter do
-  # TODO: How to disable it in test env? Manage it via Config?
-  # Use like sentry included environments?
-
   def child_spec(opts) do
     %{
       id: __MODULE__,

@@ -6,6 +6,14 @@ defmodule LoggerExporter.HTTPClient do
   @spec batch([Event.t()]) :: :ok | :error
 
   def batch(events) do
+    if Config.send_to_http() do
+      send_batch_to_http(events)
+    else
+      :ok
+    end
+  end
+
+  defp send_batch_to_http(events) do
     :telemetry.span([:logger_exporter, :batch], %{events: events}, fn ->
       exporter = Config.exporter()
 
