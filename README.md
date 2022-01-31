@@ -2,16 +2,18 @@
 
 Export your logs to the service of your choice.
 
-I created this library because I didn't like the current logger services that Heroku
-provides, and there is no simple way to export logs to a different service.
-
-I wanted a simple way to export my logs to Grafana Loki.
+I created this library because I wanted to export logs to a different service in
+Heroku. There is no simple way to export logs to do this.
 
 ## Supported exporters:
 - Loki
 
-You can implement your own exporter implemeting `LoggerExporter.Exporters.Exporter`
-behaviour
+Implement your own exporter using `LoggerExporter.Exporters.Exporter` behaviour.
+
+## Supported formatters:
+- Basic
+
+Implement your own formatter using `LoggerExporter.Formatters.Formatter` behaviour.
 
 ## Installation
 
@@ -34,10 +36,11 @@ By default, the timestamp sent for each log to the external service is in utc: `
 - `config :logger, LoggerExporter, :metadata`. Metadata to log. Defaults to `[]`
 - `config :logger, LoggerExporter, :exporter`. Allows selection of a exporter implementation. Defaults to `LoggerExporter.Exporters.LokiExporter`
 - `config :logger, LoggerExporter, :batch_every_ms`. The time (in ms) between every batch request. Default value is 2000 (2 seconds)
-- `config :logger, LoggerExporter, :host`. The host of the service. Required
+- `config :logger, LoggerExporter, :host`. The host of the service without the path. The path is inferred by the exporter. Required
 - `config :logger, LoggerExporter, :app_name`. The name of the app to use as label for `Loki`. Required if using `LokiExporter`
 - `config :logger, LoggerExporter, :environment_name`. The name of the environment to use as label for `Loki`. Required if using `LokiExporter`
 - `config :logger, LoggerExporter, :http_auth`. See below
+- `config :logger, :send_to_http` If set to false, the library will not make any actual API calls. This is useful for test or dev environments. Default value is true
 
 ### HTPP Auth
 
@@ -46,6 +49,7 @@ Supported authentication methods:
 
   ```elixir
   config :logger, LoggerExporter,
+    host: "https://logs-prod.grafana.net",
     http_auth: {:basic, System.fetch_env!("USER"), System.fetch_env!("PASSWORD")}
   ```
 
@@ -70,7 +74,7 @@ Supported authentication methods:
       app_name: "my_app",
       environment_name: Mix.env(),
       http_auth: {:basic, System.fetch_env!("LOKI_USER"), System.fetch_env!("LOKI_PASSWORD")},
-      metadata: [:request_id, :extra]
+      metadata: [:request_id]
     ```
 
 4.  Start the LoggerExporter GenServer in the supervised children list.
