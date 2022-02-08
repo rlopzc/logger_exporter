@@ -10,7 +10,7 @@ defmodule LoggerExporter.MixProject do
       version: @version,
       elixir: "~> 1.12",
       deps: deps(),
-      description: "Export your logs to external services.",
+      description: "Export your logs to the service of your choice.",
       name: "LoggerExporter",
       source_url: @source_url,
       package: package(),
