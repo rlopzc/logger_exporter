@@ -40,7 +40,9 @@ defmodule LoggerExporter.MixProject do
   defp docs do
     [
       main: "LoggerExporter",
-      extras: ["README.md"]
+      api_referencee: false,
+      source_ref: "#{@version}",
+      source_url: @source_url
     ]
   end
 end

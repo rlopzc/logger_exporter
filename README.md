@@ -3,7 +3,7 @@
 Export your logs to the service of your choice.
 
 I created this library because I wanted to export logs to a different service in
-Heroku. There is no simple way to export logs to do this.
+Heroku. There is no simple way to export your logs.
 
 ## Supported exporters:
 - Loki
@@ -39,8 +39,8 @@ By default, the timestamp sent for each log to the external service is in utc: `
 - `config :logger, LoggerExporter, :host`. The host of the service without the path. The path is inferred by the exporter. Required
 - `config :logger, LoggerExporter, :app_name`. The name of the app to use as label for `Loki`. Required if using `LokiExporter`
 - `config :logger, LoggerExporter, :environment_name`. The name of the environment to use as label for `Loki`. Required if using `LokiExporter`
-- `config :logger, LoggerExporter, :http_auth`. See below
 - `config :logger, :send_to_http` If set to false, the library will not make any actual API calls. This is useful for test or dev environments. Default value is true
+- `config :logger, LoggerExporter, :http_auth`. See below
 
 ### HTPP Auth
 

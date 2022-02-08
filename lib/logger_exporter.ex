@@ -1,4 +1,9 @@
 defmodule LoggerExporter do
+  @moduledoc "README.md"
+             |> File.read!()
+             |> String.split("<!-- MDOC !-->")
+             |> Enum.fetch!(0)
+
   def child_spec(opts) do
     %{
       id: __MODULE__,
