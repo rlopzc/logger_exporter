@@ -33,6 +33,9 @@ defmodule LoggerExporter.MixProject do
 
   defp package do
     [
+      files: ["lib", "mix.exs", "README*", "LICENSE*"],
+      mantainers: ["Romario López"],
+      licenses: ["MIT"],
       links: %{"GitHub" => @source_url}
     ]
   end
