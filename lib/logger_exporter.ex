@@ -3,6 +3,7 @@ defmodule LoggerExporter do
              |> File.read!()
              |> String.split("<!-- MDOC !-->")
              |> Enum.fetch!(0)
+  @external_resource "README.md"
 
   def child_spec(opts) do
     %{
