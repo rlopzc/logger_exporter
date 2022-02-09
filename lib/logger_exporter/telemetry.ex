@@ -1,4 +1,8 @@
 defmodule LoggerExporter.Telemetry do
+  @moduledoc """
+  Telemetry default handler for [:start, :stop, :exception] batch events
+  """
+
   require Logger
 
   def attach_default_logger do

@@ -1,4 +1,6 @@
 defmodule LoggerExporter.HTTPClient do
+  @moduledoc false
+
   alias LoggerExporter.{Config, Event}
 
   require Logger

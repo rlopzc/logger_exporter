@@ -27,6 +27,7 @@ defmodule LoggerExporter.MixProject do
       {:jason, "~> 1.2"},
       {:finch, "~> 0.8"},
       {:telemetry, "~> 0.4.2 or ~> 1.0"},
+      {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
       {:ex_doc, "~> 0.27", only: :dev, runtime: false}
     ]
   end

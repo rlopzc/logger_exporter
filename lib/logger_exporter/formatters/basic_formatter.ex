@@ -1,4 +1,9 @@
 defmodule LoggerExporter.Formatters.BasicFormatter do
+  @moduledoc """
+  Basic formatter.
+
+  It formats the log with: "$time [$level] $message $metadata"
+  """
   @behaviour LoggerExporter.Formatters.Formatter
 
   def format_event(level, msg, ts, md, md_keys) do

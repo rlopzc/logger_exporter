@@ -1,4 +1,10 @@
 defmodule LoggerExporter.Exporters.LokiExporter do
+  @moduledoc """
+  LokiExporter
+
+  Transforms the events in a struct that Loki understands
+  """
+
   alias LoggerExporter.{Config, Event}
 
   @behaviour LoggerExporter.Exporters.Exporter

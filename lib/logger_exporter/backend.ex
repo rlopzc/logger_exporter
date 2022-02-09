@@ -1,4 +1,10 @@
 defmodule LoggerExporter.Backend do
+  @moduledoc """
+  LoggerExporter Backend.
+
+  Used when configuring the `Logger` :backends
+  """
+
   @behaviour :gen_event
 
   alias LoggerExporter.Formatters
@@ -18,7 +24,6 @@ defmodule LoggerExporter.Backend do
   def init({__MODULE__, opts}) when is_list(opts) do
     config = configure_merge(Config.get_env(), opts)
 
-    # TODO: Validate configs, if something is missing don't start the backend
     {:ok, init(config, %__MODULE__{})}
   end
 
@@ -31,14 +36,11 @@ defmodule LoggerExporter.Backend do
   def handle_event({level, _gl, {Logger, message, timestamp, metadata}}, state) do
     %{level: log_level} = state
 
-    cond do
-      not meet_level?(level, log_level) ->
-        {:ok, state}
-
-      true ->
-        log_event(level, message, timestamp, metadata, state)
-        {:ok, state}
+    if meet_level?(level, log_level) do
+      log_event(level, message, timestamp, metadata, state)
     end
+
+    {:ok, state}
   end
 
   @impl true

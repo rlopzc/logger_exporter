@@ -1,4 +1,6 @@
 defmodule LoggerExporter.Config do
+  @moduledoc false
+
   def app_name do
     case Keyword.fetch(get_env(), :app_name) do
       {:ok, app} ->
