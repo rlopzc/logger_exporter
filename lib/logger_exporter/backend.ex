@@ -12,7 +12,7 @@ defmodule LoggerExporter.Backend do
 
   require Logger
 
-  defstruct level: nil, metadata: nil, formatter: nil
+  defstruct [:level, :metadata, :formatter]
 
   @impl true
   def init(__MODULE__) do

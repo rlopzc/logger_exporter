@@ -58,7 +58,7 @@ defmodule LoggerExporter.Config do
   end
 
   def batch_every_ms do
-    Keyword.get(get_env(), :batch_every_ms, 2000)
+    Keyword.get(get_env(), :batch_every_ms, 2_000)
   end
 
   def http_auth do
