@@ -6,6 +6,7 @@ defmodule LoggerExporter.Formatters.BasicFormatter do
   """
   @behaviour LoggerExporter.Formatters.Formatter
 
+  @impl true
   def format_event(level, msg, ts, md, md_keys) do
     "$time [$level] $message $metadata"
     |> Logger.Formatter.compile()

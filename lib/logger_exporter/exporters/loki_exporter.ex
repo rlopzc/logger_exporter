@@ -9,10 +9,12 @@ defmodule LoggerExporter.Exporters.LokiExporter do
 
   @behaviour LoggerExporter.Exporters.Exporter
 
+  @impl true
   def headers do
     []
   end
 
+  @impl true
   def body(events) do
     values = Enum.map(events, &event_to_log/1)
 
