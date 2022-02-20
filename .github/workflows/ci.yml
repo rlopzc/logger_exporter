@@ -18,3 +18,4 @@ jobs:
           elixir-version: ${{matrix.elixir}}
       - run: mix deps.get
       - run: mix compile
+      - run: mix credo
