@@ -36,8 +36,8 @@ defmodule LoggerExporter.Config do
 
       :error ->
         raise ArgumentError,
-              "missing :host option for LoggerExporter application. " <>
-                "Expected an url"
+              "MISSING_HOST"
+
     end
   end
 

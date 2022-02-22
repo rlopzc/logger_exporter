@@ -86,6 +86,12 @@ defmodule LoggerExporter.Backend do
     init(config, state)
   end
 
+  defp log_event(level, "MISSING_HOST"=msg, ts, md, state) do
+    event = format_event(level, msg, ts, md, state)
+
+    # Batcher.enqueue(event)
+  end
+
   defp log_event(level, msg, ts, md, state) do
     event = format_event(level, msg, ts, md, state)
 
