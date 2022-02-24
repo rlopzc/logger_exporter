@@ -1,6 +1,6 @@
 defmodule LoggerExporter.Loggers.Plug do
   @moduledoc """
-  A plug for loggin request information in the format:
+  A plug for logging request information in the format:
 
       method=POST path=/users params=%{"user" => %{"name" => "Juan"}} status=201 duration=101ms
 

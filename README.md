@@ -15,6 +15,16 @@ Implement your own exporter using `LoggerExporter.Exporters.Exporter` behaviour.
 
 Implement your own formatter using `LoggerExporter.Formatters.Formatter` behaviour.
 
+## Plug Logger
+
+A plug for logging request information. It will log the method, path, params,
+status and duration.
+
+You can add it to your MyApp.Endpoint:
+```elixir
+  plug LoggerExporter.Loggers.Plug
+```
+
 ## Installation
 
 Add `logger_exporter` to your list of dependencies in `mix.exs`:
@@ -86,6 +96,16 @@ Supported authentication methods:
       LoggerExporter
     ]
     ```
+5. (Optional) Add custom Plug logger.
+  In `MyApp.Endpoint` add the plug after `Plug.Parsers`.
+  If you see duplicate logs, remove `Plug.Telemetry` from your endpoint.
+
+  ```elixir
+  plug Plug.Parsers,
+    ...
+
+  plug LoggerExporter.Loggers.Plug
+  ```
 
 ## JSON Formatter
 
