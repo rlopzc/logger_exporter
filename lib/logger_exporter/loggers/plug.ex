@@ -40,15 +40,13 @@ defmodule LoggerExporter.Loggers.Plug do
         time_us = System.convert_time_unit(stop_time - start_time, :native, :microsecond)
         time_ms = div(time_us, 1000)
 
+        filtered_params = filter_parameters_fn.(conn.params)
+
         params =
-          conn.params
-          |> filter_parameters_fn.()
-          |> then(fn filtered_params ->
-            case Jason.encode(filtered_params) do
-              {:ok, json} -> json
-              _ -> inspect(filtered_params)
-            end
-          end)
+          case Jason.encode(filtered_params) do
+            {:ok, json} -> json
+            _ -> inspect(filtered_params)
+          end
 
         "method=#{conn.method} path=#{conn.request_path} params=#{params} status=#{conn.status} duration=#{time_ms}ms"
       end)
