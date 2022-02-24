@@ -35,18 +35,18 @@ defmodule LoggerExporter.Loggers.Plug do
     start_time = System.monotonic_time()
 
     Conn.register_before_send(conn, fn conn ->
+      filtered_params = filter_parameters_fn.(conn.params)
+
+      params =
+        case Jason.encode(filtered_params) do
+          {:ok, json} -> json
+          _ -> inspect(filtered_params)
+        end
+
       Logger.log(level, fn ->
         stop_time = System.monotonic_time()
         time_us = System.convert_time_unit(stop_time - start_time, :native, :microsecond)
         time_ms = div(time_us, 1000)
-
-        filtered_params = filter_parameters_fn.(conn.params)
-
-        params =
-          case Jason.encode(filtered_params) do
-            {:ok, json} -> json
-            _ -> inspect(filtered_params)
-          end
 
         "method=#{conn.method} path=#{conn.request_path} params=#{params} status=#{conn.status} duration=#{time_ms}ms"
       end)
