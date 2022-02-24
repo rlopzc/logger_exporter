@@ -6,7 +6,9 @@ defmodule LoggerExporter.Loggers.Plug do
 
   To use it, just plug it into the desired module.
 
-      plug plug LoggerExporter.Loggers.Plug, log: :debug
+      plug LoggerExporter.Loggers.Plug,
+        log: :debug,
+        filter_parameters_fn: &Phoenix.Logger.filter_values/1
 
   ## Options
 
@@ -14,6 +16,8 @@ defmodule LoggerExporter.Loggers.Plug do
       Default is `:info`.
       The [list of supported levels](https://hexdocs.pm/logger/Logger.html#module-levels)
       is available in the `Logger` documentation.
+    * `:filter_parameters_fn` - The Function to call with conn.params. Filter
+      params that doesn't need to be logged i.e. {"password": "[FILTERED]"}.
   """
 
   require Logger
@@ -21,12 +25,13 @@ defmodule LoggerExporter.Loggers.Plug do
   @behaviour Plug
 
   @impl true
-  def init(opts) do
-    Keyword.get(opts, :log, :info)
-  end
+  def init(opts), do: opts
 
   @impl true
-  def call(conn, level) do
+  def call(conn, opts) do
+    level = Keyword.get(opts, :log, :info)
+    filter_parameters_fn = Keyword.get(opts, :filter_parameters_fn, & &1)
+
     start_time = System.monotonic_time()
 
     Conn.register_before_send(conn, fn conn ->
@@ -36,10 +41,14 @@ defmodule LoggerExporter.Loggers.Plug do
         time_ms = div(time_us, 1000)
 
         params =
-          case Jason.encode(conn.params) do
-            {:ok, json} -> json
-            _ -> inspect(conn.params)
-          end
+          conn.params
+          |> filter_parameters_fn.()
+          |> then(fn filtered_params ->
+            case Jason.encode(filtered_params) do
+              {:ok, json} -> json
+              _ -> inspect(filtered_params)
+            end
+          end)
 
         "method=#{conn.method} path=#{conn.request_path} params=#{params} status=#{conn.status} duration=#{time_ms}ms"
       end)
