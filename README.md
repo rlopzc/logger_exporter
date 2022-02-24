@@ -100,12 +100,12 @@ Supported authentication methods:
   In `MyApp.Endpoint` add the plug after `Plug.Parsers`.
   If you see duplicate logs, remove `Plug.Telemetry` from your endpoint.
 
-  ```elixir
-  plug Plug.Parsers,
-    ...
+    ```elixir
+    plug Plug.Parsers,
+      ...
 
-  plug LoggerExporter.Loggers.Plug
-  ```
+    plug LoggerExporter.Loggers.Plug
+    ```
 
 ## JSON Formatter
 
