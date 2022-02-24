@@ -9,7 +9,7 @@ jobs:
     strategy:
       matrix:
         otp: ['24']
-        elixir: ['1.9', '1.11', '1.13']
+        elixir: ['1.10', '1.11', '1.12', '1.13']
     steps:
       - uses: actions/checkout@v2
       - uses: erlef/setup-beam@v1
