@@ -32,7 +32,7 @@ Add `logger_exporter` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:logger_exporter, "~> 0.1.0"}
+    {:logger_exporter, "~> 0.2.2"}
   ]
 end
 ```
@@ -65,7 +65,7 @@ Supported authentication methods:
 
 ## Usage in Phoenix
 
-1.  Add the following to deps section of your mix.exs: `{:logger_exporter, "~> 0.1.0"}`
+1.  Add the following to deps section of your mix.exs: `{:logger_exporter, "~> 0.2.2"}`
     and then `mix deps.get`
 
 2.  Add `LoggerExporter.Backend` to your logger's backends configuration
