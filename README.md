@@ -22,7 +22,15 @@ status and duration.
 
 You can add it to your MyApp.Endpoint:
 ```elixir
+  # Log level defaults to :info
   plug LoggerExporter.Loggers.Plug
+
+  # Dynamic log
+  plug LoggerExporter.Loggers.Plug, log: {__MODULE__, :log_level, []}
+
+  # Disables logging for routes like /health_check
+  def log_level(%{path_info: ["health_check"]}), do: false
+  def log_level(_), do: :info
 ```
 
 ## Installation
