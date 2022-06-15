@@ -40,7 +40,7 @@ Add `logger_exporter` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:logger_exporter, "~> 0.2.2"}
+    {:logger_exporter, "~> 0.3.0"}
   ]
 end
 ```
