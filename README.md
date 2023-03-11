@@ -71,6 +71,15 @@ Supported authentication methods:
     http_auth: {:basic, System.fetch_env!("USER"), System.fetch_env!("PASSWORD")}
   ```
 
+- API Key:
+
+```elixir
+config :logger, LoggerExporter,
+  host: "https://logs.mezmo.com",
+  exporter: LoggerExporter.Exporters.MezmoExporter,
+  http_auth: {:api_key, System.fetch_env!("MEZMO_API_KEY")}
+```
+
 ## Usage in Phoenix
 
 1.  Add the following to deps section of your mix.exs: `{:logger_exporter, "~> 0.2.2"}`

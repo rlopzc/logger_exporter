@@ -12,7 +12,7 @@ defmodule LoggerExporter.Backend do
 
   require Logger
 
-  defstruct [:level, :metadata, :formatter]
+  defstruct [:level, :metadata_keys, :formatter, :app_name]
 
   @impl true
   def init(__MODULE__) do
@@ -64,13 +64,15 @@ defmodule LoggerExporter.Backend do
   defp init(config, state) do
     level = Keyword.get(config, :level, :info)
     formatter = Keyword.get(config, :formatter, Formatters.BasicFormatter)
-    metadata = Keyword.get(config, :metadata, []) |> configure_metadata()
+    metadata_keys = Keyword.get(config, :metadata, []) |> configure_metadata()
+    app_name = Config.app_name()
 
     %{
       state
       | level: level,
         formatter: formatter,
-        metadata: metadata
+        metadata_keys: metadata_keys,
+        app_name: app_name
     }
   end
 
@@ -86,20 +88,23 @@ defmodule LoggerExporter.Backend do
     init(config, state)
   end
 
-  defp log_event(level, msg, ts, md, state) do
-    event = format_event(level, msg, ts, md, state)
+  defp log_event(level, msg, timestamp, metadata, state) do
+    event = format_event(level, msg, timestamp, metadata, state)
 
     Batcher.enqueue(event)
   end
 
-  defp format_event(level, msg, ts, md, state) do
-    %{formatter: formatter, metadata: md_keys} = state
+  defp format_event(level, msg, timestamp, metadata, state) do
+    %{formatter: formatter, metadata_keys: metadata_keys, app_name: app_name} = state
 
-    log = formatter.format_event(level, msg, ts, md, md_keys)
+    log = formatter.format_event(level, msg, timestamp, metadata, metadata_keys)
 
     %Event{
       timestamp_ns: System.os_time(:nanosecond),
-      log: log
+      log: log,
+      level: level,
+      app_name: app_name,
+      metadata: LoggerExporter.take_metadata(metadata, metadata_keys)
     }
   end
 end

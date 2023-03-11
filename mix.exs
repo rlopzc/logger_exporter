@@ -8,7 +8,7 @@ defmodule LoggerExporter.MixProject do
     [
       app: :logger_exporter,
       version: @version,
-      elixir: "~> 1.9",
+      elixir: "~> 1.13",
       deps: deps(),
       description: "Export your logs to the service of your choice.",
       name: "LoggerExporter",

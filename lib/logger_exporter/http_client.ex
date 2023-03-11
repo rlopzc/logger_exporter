@@ -31,6 +31,8 @@ defmodule LoggerExporter.HTTPClient do
         Finch.build(:post, Config.url(), headers, body)
         |> Finch.request(LoggerExporterFinch)
 
+      IO.inspect(finch_response, label: "http response")
+
       case process_batch_response(finch_response, events) do
         :ok ->
           {:ok, %{events: events, status: :ok, response: finch_response}}

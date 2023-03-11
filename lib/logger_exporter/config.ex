@@ -52,6 +52,9 @@ defmodule LoggerExporter.Config do
       LoggerExporter.Exporters.LokiExporter ->
         "#{host}/loki/api/v1/push"
 
+      LoggerExporter.Exporters.MezmoExporter ->
+        "#{host}/logs/ingest?hostname=thematrix"
+
       _ ->
         host
     end
