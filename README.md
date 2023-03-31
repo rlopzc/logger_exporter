@@ -7,6 +7,7 @@ Heroku. There is no simple way to export your logs.
 
 ## Supported exporters:
 - Loki
+- Mezmo (LogDNA)
 
 Implement your own exporter using `LoggerExporter.Exporters.Exporter` behaviour.
 
@@ -40,7 +41,7 @@ Add `logger_exporter` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:logger_exporter, "~> 0.3.0"}
+    {:logger_exporter, "~> 0.4.0"}
   ]
 end
 ```
@@ -49,40 +50,35 @@ end
 
 By default, the timestamp sent for each log to the external service is in utc: `System.os_time(:nanosecond)`
 
-- `config :logger, LoggerExporter, :level`. The logger level to report.
-- `config :logger, LoggerExporter, :formatter`. Allows the selection of a formatter implementation. Defaults to `LoggerExporter.Formatters.BasicFormatter`
-- `config :logger, LoggerExporter, :metadata`. Metadata to log. Defaults to `[]`
-- `config :logger, LoggerExporter, :exporter`. Allows selection of a exporter implementation. Defaults to `LoggerExporter.Exporters.LokiExporter`
-- `config :logger, LoggerExporter, :batch_every_ms`. The time (in ms) between every batch request. Default value is 2000 (2 seconds)
-- `config :logger, LoggerExporter, :host`. The host of the service without the path. The path is inferred by the exporter. Required
-- `config :logger, LoggerExporter, :app_name`. The name of the app to use as label for `Loki`. Required if using `LokiExporter`
-- `config :logger, LoggerExporter, :environment_name`. The name of the environment to use as label for `Loki`. Required if using `LokiExporter`
-- `config :logger, :send_to_http` If set to false, the library will not make any actual API calls. This is useful for test or dev environments. Default value is true
-- `config :logger, LoggerExporter, :http_auth`. See below
+| option           | description                                                                                                   | default                                    |
+|------------------|---------------------------------------------------------------------------------------------------------------|--------------------------------------------|
+| level            | The logger level to report.                                                                                   | `:info`                                    |
+| formatter        | Allows the selection of a formatter implementation.                                                           | `LoggerExporter.Formatters.BasicFormatter` |
+| metadata         | Metadata to log.                                                                                              | `[]`                                       |
+| exporter         | Allows selection of a exporter implementation.                                                                | `LoggerExporter.Exporters.LokiExporter`    |
+| host             | The host of the service without the path. The path is inferred by the exporter.                               | No default. Required                       |
+| app_name         | The name of the app to use as label.                                                                          | No default. Required                       |
+| environment_name | The name of the app to use as label.                                                                          | No default. Required                       |
+| send_to_http     | If set to false, the library will not make any actual API calls. This is useful for test or dev environments. | `true`                                       |
+| http_authh       | See below for configuration                                                                                   | No default                                 |
+
 
 ### HTPP Auth
 
 Supported authentication methods:
-- Basic:
+- Basic
+- Bearer
+- Custom
 
-  ```elixir
-  config :logger, LoggerExporter,
-    host: "https://logs-prod.grafana.net",
-    http_auth: {:basic, System.fetch_env!("USER"), System.fetch_env!("PASSWORD")}
-  ```
-
-- API Key:
-
-```elixir
-config :logger, LoggerExporter,
-  host: "https://logs.mezmo.com",
-  exporter: LoggerExporter.Exporters.MezmoExporter,
-  http_auth: {:api_key, System.fetch_env!("MEZMO_API_KEY")}
-```
+| auth   |                          usage | examples                                  | result                                         |
+|--------|-------------------------------:|-------------------------------------------|------------------------------------------------|
+| basic  | `{:basic, username, password}` | `{:basic, "user", "pxIsldPlwty"}`         | `"Authorization: Basic CshL2XlkX57cww=="`      |
+| bearer |             `{:bearer, token}` | `{:bearer, "WmRUuBOnTjDwP6jo3bno"}`       | `"Authorization: Bearer WmRUuBOnTjDwP6jo3bno"` |
+| custom |     `{:header, header, value}` | `{:header, "apiKey", "dAWQvRQQkZCc2A=="}` | `"apiKey: dAWQvRQQkZCc2A=="`                   |
 
 ## Usage in Phoenix
 
-1.  Add the following to deps section of your mix.exs: `{:logger_exporter, "~> 0.2.2"}`
+1.  Add the following to deps section of your mix.exs: `{:logger_exporter, "~> 0.4.0"}`
     and then `mix deps.get`
 
 2.  Add `LoggerExporter.Backend` to your logger's backends configuration
@@ -124,7 +120,7 @@ config :logger, LoggerExporter,
     plug LoggerExporter.Loggers.Plug
     ```
 
-## JSON Formatter
+## JSON Formatter Example
 
 If you want to log in JSON format, you can use the formatter of another library:
 [logger_json](https://github.com/Nebo15/logger_json)

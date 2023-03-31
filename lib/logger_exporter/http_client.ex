@@ -80,7 +80,6 @@ defmodule LoggerExporter.HTTPClient do
       headers
   end
 
-  # TODO: update readme
   defp auth_header do
     case Config.http_auth() do
       {:basic, user, password} ->
