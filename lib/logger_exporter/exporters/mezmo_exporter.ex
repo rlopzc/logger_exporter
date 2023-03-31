@@ -24,11 +24,9 @@ defmodule LoggerExporter.Exporters.MezmoExporter do
   defp event_to_log(%Event{} = event) do
     %{
       timestamp: System.convert_time_unit(event.timestamp_ns, :nanosecond, :millisecond),
-      line: event.log,
+      line: event.log_line,
       app: event.app_name,
       level: event.level,
-      # TODO: support metadata
-      meta: ""
     }
   end
 end
