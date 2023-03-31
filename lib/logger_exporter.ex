@@ -21,11 +21,11 @@ defmodule LoggerExporter do
   Take specified keys from the metadata
   """
   @spec take_metadata(keyword(), :all | [atom()]) :: keyword()
-  def take_metadata(metadata, :all), do: metadata
+  def take_metadata(log_metadata, :all), do: log_metadata
 
-  def take_metadata(metadata, keys) do
+  def take_metadata(log_metadata, keys) do
     Enum.reduce(keys, [], fn key, acc ->
-      case Keyword.fetch(metadata, key) do
+      case Keyword.fetch(log_metadata, key) do
         {:ok, val} -> [{key, val} | acc]
         :error -> acc
       end

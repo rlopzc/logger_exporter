@@ -52,6 +52,11 @@ defmodule LoggerExporter.Config do
       LoggerExporter.Exporters.LokiExporter ->
         "#{host}/loki/api/v1/push"
 
+      LoggerExporter.Exporters.MezmoExporter ->
+        {:ok, hostname} = :inet.gethostname()
+
+        "#{host}/logs/ingest?hostname=#{hostname}"
+
       _ ->
         host
     end

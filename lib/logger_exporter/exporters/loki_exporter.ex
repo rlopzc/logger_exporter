@@ -28,7 +28,7 @@ defmodule LoggerExporter.Exporters.LokiExporter do
     }
   end
 
-  defp event_to_log(%Event{} = event) do
-    [event.timestamp_ns, event.log]
+  defp event_to_log(%Event{timestamp_ns: timestamp_ns, log_line: log_line}) do
+    [timestamp_ns, log_line]
   end
 end

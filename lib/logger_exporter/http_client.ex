@@ -31,6 +31,8 @@ defmodule LoggerExporter.HTTPClient do
         Finch.build(:post, Config.url(), headers, body)
         |> Finch.request(LoggerExporterFinch)
 
+      IO.inspect(finch_response, label: "http response")
+
       case process_batch_response(finch_response, events) do
         :ok ->
           {:ok, %{events: events, status: :ok, response: finch_response}}
@@ -83,6 +85,12 @@ defmodule LoggerExporter.HTTPClient do
       {:basic, user, password} ->
         creds = Base.encode64("#{user}:#{password}")
         [{"Authorization", "Basic #{creds}"}]
+
+      {:bearer, token} ->
+        [{"Authorization", "Bearer #{token}"}]
+
+      {:header, header, value} ->
+        [{header, value}]
 
       _ ->
         []
