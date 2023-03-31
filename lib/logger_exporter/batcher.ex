@@ -29,11 +29,21 @@ defmodule LoggerExporter.Batcher do
     GenServer.cast(__MODULE__, {:enqueue, event})
   end
 
+  @spec get_queue() :: [Event.t()]
+  def get_queue do
+    GenServer.call(__MODULE__, :get_queue)
+  end
+
   # GenServer
 
   @impl true
   def handle_cast({:enqueue, event}, queue) do
     {:noreply, :queue.in(event, queue)}
+  end
+
+  @impl true
+  def handle_call(:get_queue, _from, queue) do
+    {:reply, :queue.to_list(queue), queue}
   end
 
   @impl true

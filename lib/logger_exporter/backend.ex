@@ -97,14 +97,16 @@ defmodule LoggerExporter.Backend do
   defp format_event(level, msg, timestamp, metadata, state) do
     %{formatter: formatter, metadata_keys: metadata_keys, app_name: app_name} = state
 
-    log = formatter.format_event(level, msg, timestamp, metadata, metadata_keys)
+    timestamp_ns = System.os_time(:nanosecond)
+    log_line = formatter.format_event(level, msg, timestamp, metadata, metadata_keys)
+    log_metadata = LoggerExporter.take_metadata(metadata, metadata_keys)
 
     %Event{
-      timestamp_ns: System.os_time(:nanosecond),
-      log: log,
+      timestamp_ns: timestamp_ns,
+      log_line: log_line,
       level: level,
       app_name: app_name,
-      metadata: LoggerExporter.take_metadata(metadata, metadata_keys)
+      metadata: log_metadata
     }
   end
 end

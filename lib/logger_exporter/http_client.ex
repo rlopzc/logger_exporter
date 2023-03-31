@@ -80,11 +80,18 @@ defmodule LoggerExporter.HTTPClient do
       headers
   end
 
+  # TODO: update readme
   defp auth_header do
     case Config.http_auth() do
       {:basic, user, password} ->
         creds = Base.encode64("#{user}:#{password}")
         [{"Authorization", "Basic #{creds}"}]
+
+      {:bearer, token} ->
+        [{"Authorization", "Bearer #{token}"}]
+
+      {:header, header, value} ->
+        [{header, value}]
 
       _ ->
         []
