@@ -2,7 +2,7 @@ defmodule LoggerExporter.MixProject do
   use Mix.Project
 
   @source_url "https://github.com/romariolopezc/logger_exporter"
-  @version "0.3.0"
+  @version "0.4.0"
 
   def project do
     [
