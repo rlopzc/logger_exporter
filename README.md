@@ -70,11 +70,11 @@ Supported authentication methods:
 - Bearer
 - Custom
 
-| auth   |                          usage | examples                                  | result                                         |
-|--------|-------------------------------:|-------------------------------------------|------------------------------------------------|
-| basic  | `{:basic, username, password}` | `{:basic, "user", "pxIsldPlwty"}`         | `"Authorization: Basic CshL2XlkX57cww=="`      |
-| bearer |             `{:bearer, token}` | `{:bearer, "WmRUuBOnTjDwP6jo3bno"}`       | `"Authorization: Bearer WmRUuBOnTjDwP6jo3bno"` |
-| custom |     `{:header, header, value}` | `{:header, "apiKey", "dAWQvRQQkZCc2A=="}` | `"apiKey: dAWQvRQQkZCc2A=="`                   |
+| auth     | examples                                   | result                                           |
+| -------- | ------------------------------------------ | ------------------------------------------------ |
+| basic    | `{:basic, "user", "pxIsldPlwty"}`          | `"Authorization: Basic CshL2XlkX57cww=="`        |
+| bearer   | `{:bearer, "WmRUuBOnTjDwP6jo3bno"}`        | `"Authorization: Bearer WmRUuBOnTjDwP6jo3bno"`   |
+| custom   | `{:header, "apiKey", "dAWRQQkZCc2A=="}`    | `"apiKey: dAWRQQkZCc2A=="`                       |
 
 ## Usage in Phoenix
 
