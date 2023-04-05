@@ -95,7 +95,7 @@ Supported authentication methods:
     config :logger, LoggerExporter,
       host: "http://localhost:3100",
       app_name: "my_app",
-      environment_name: Mix.env(),
+      environment_name: config_env(),
       http_auth: {:basic, System.fetch_env!("LOKI_USER"), System.fetch_env!("LOKI_PASSWORD")},
       metadata: [:request_id]
     ```
