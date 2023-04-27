@@ -21,7 +21,10 @@ defmodule LoggerExporter.Exporters.LokiExporter do
     %{
       streams: [
         %{
-          stream: %{app: Config.app_name(), env: Config.environment_name()},
+          stream: %{
+            app: Config.app_name(),
+            env: Config.environment_name()
+          },
           values: values
         }
       ]
@@ -29,6 +32,6 @@ defmodule LoggerExporter.Exporters.LokiExporter do
   end
 
   defp event_to_log(%Event{timestamp_ns: timestamp_ns, log_line: log_line}) do
-    [timestamp_ns, log_line]
+    [to_string(timestamp_ns), log_line]
   end
 end
