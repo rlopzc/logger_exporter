@@ -125,13 +125,29 @@ Supported authentication methods:
 If you want to log in JSON format, you can use the formatter of another library:
 [logger_json](https://github.com/Nebo15/logger_json)
 
-You can configure it like this:
+You need to implement the following formatter using the `LoggerExporter.Formatters.Formatter` behaviour.
+
 ```elixir
-config :logger, LoggerExporter,
-  formatter: LoggerJSON.Formatters.BasicLogger
+defmodule MyFormatter do
+  @behaviour LoggerExporter.Formatters.Formatter
+
+  alias LoggerJSON.Formatters.BasicLogger
+
+  @impl true
+  def format_event(level, msg, ts, md, md_keys) do
+    BasicLogger.format_event(level, msg, ts, md, md_keys, [])
+    |> Jason.encode!()
+  end
+end
 ```
 
-And it will work out of the box :)
+Then, configure it like this:
+```elixir
+config :logger, LoggerExporter,
+  formatter: MyFormatter
+```
+
+Tada! You have JSON logs!
 
 ## Telemetry
 
