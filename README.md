@@ -12,7 +12,12 @@ Heroku. There is no simple way to export your logs.
 Implement your own exporter using `LoggerExporter.Exporters.Exporter` behaviour.
 
 ## Supported formatters:
-- Basic
+- Basic. By default, it will read your logger `:console` format configuration.
+  Example:
+  ```elixir
+  config :logger, :console, format: "$time $message"
+  ```
+  Defaults to `$time $metadata[$level] $message`
 
 Implement your own formatter using `LoggerExporter.Formatters.Formatter` behaviour.
 
