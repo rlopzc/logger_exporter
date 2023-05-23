@@ -2,13 +2,13 @@ defmodule LoggerExporter.Formatters.BasicFormatter do
   @moduledoc """
   Basic formatter.
 
-  It formats the log with: "$time [$level] $message $metadata"
+  If there is no `:logger -> :console -> :format`, it sets the format to: "$time $metadata[$level] $message"
   """
   @behaviour LoggerExporter.Formatters.Formatter
 
   @impl true
   def format_event(level, msg, timestamp, log_metada, metadata_keys) do
-    "$time [$level] $message $metadata"
+    default_formatter()
     |> Logger.Formatter.compile()
     |> Logger.Formatter.format(
       level,
@@ -17,5 +17,11 @@ defmodule LoggerExporter.Formatters.BasicFormatter do
       LoggerExporter.take_metadata(log_metada, metadata_keys)
     )
     |> IO.chardata_to_string()
+  end
+
+  defp default_formatter do
+    :logger
+    |> Application.get_env(:console)
+    |> Keyword.get(:format, "$time $metadata[$level] $message")
   end
 end
