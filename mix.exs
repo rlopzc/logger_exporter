@@ -24,8 +24,8 @@ defmodule LoggerExporter.MixProject do
 
   defp deps do
     [
+      {:req, "~> 0.4.0"},
       {:jason, "~> 1.2"},
-      {:finch, "~> 0.8"},
       {:telemetry, "~> 0.4.2 or ~> 1.0"},
       {:plug, "~> 1.7"},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
