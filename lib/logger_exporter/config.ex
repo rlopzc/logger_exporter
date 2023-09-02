@@ -41,6 +41,10 @@ defmodule LoggerExporter.Config do
     end
   end
 
+  def http_client do
+    Keyword.get(get_env(), :http_client, LoggerExporter.HttpClient.ReqClient)
+  end
+
   def get_env do
     Application.get_env(:logger, LoggerExporter, [])
   end
