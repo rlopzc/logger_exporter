@@ -1,14 +1,14 @@
 defmodule LoggerExporter.MixProject do
   use Mix.Project
 
-  @source_url "https://github.com/romariolopezc/logger_exporter"
+  @source_url "https://github.com/rlopzc/logger_exporter"
   @version "0.4.3"
 
   def project do
     [
       app: :logger_exporter,
       version: @version,
-      elixir: "~> 1.13",
+      elixir: "~> 1.11",
       deps: deps(),
       description: "Export your logs to the service of your choice.",
       name: "LoggerExporter",
@@ -18,7 +18,6 @@ defmodule LoggerExporter.MixProject do
       dialyzer: [
         plt_file: {:no_warn, "priv/plts/dialyzer.plt"},
         plt_core_path: "priv/plts",
-        plt_add_deps: :app_tree,
         plt_add_apps: [:mix, :plug]
       ]
     ]
@@ -36,7 +35,7 @@ defmodule LoggerExporter.MixProject do
       {:plug, "~> 1.7", optional: true},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
       {:ex_doc, "~> 0.27", only: :dev, runtime: false},
-      {:dialyxir, "~> 1.3", only: [:test, :dev], runtime: false}
+      {:dialyxir, "~> 1.1.0", only: [:test, :dev], runtime: false}
     ]
   end
 
