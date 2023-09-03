@@ -20,10 +20,10 @@ defmodule LoggerExporter.Exporters.MezmoExporter do
   end
 
   defp event_to_log(%Event{} = event) do
-    timestam_ms = System.convert_time_unit(event.timestamp_ns, :nanosecond, :millisecond)
+    timestamp_ms = System.convert_time_unit(event.timestamp_ns, :nanosecond, :millisecond)
 
     %{
-      timestamp: timestam_ms,
+      timestamp: timestamp_ms,
       line: event.log_line,
       app: event.app_name,
       level: event.level
