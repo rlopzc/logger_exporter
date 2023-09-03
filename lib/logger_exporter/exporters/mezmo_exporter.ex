@@ -5,28 +5,28 @@ defmodule LoggerExporter.Exporters.MezmoExporter do
 
   alias LoggerExporter.Event
 
-  @behaviour LoggerExporter.Exporters.Exporter
+  @behaviour LoggerExporter.ExporterBehavior
 
   @impl true
   def headers do
-    []
+    [{"Content-Type", "application/json"}]
   end
 
   @impl true
   def body(events) do
     lines = Enum.map(events, &event_to_log/1)
 
-    %{
-      lines: lines
-    }
+    Jason.encode!(%{lines: lines})
   end
 
   defp event_to_log(%Event{} = event) do
+    timestamp_ms = System.convert_time_unit(event.timestamp_ns, :nanosecond, :millisecond)
+
     %{
-      timestamp: System.convert_time_unit(event.timestamp_ns, :nanosecond, :millisecond),
+      timestamp: timestamp_ms,
       line: event.log_line,
       app: event.app_name,
-      level: event.level,
+      level: event.level
     }
   end
 end

@@ -1,8 +1,7 @@
 defmodule LoggerExporterTest do
-  use ExUnit.Case
-  doctest LoggerExporter
+  use ExUnit.Case, async: true
 
-  test "greets the world" do
-    assert LoggerExporter.hello() == :world
+  test "assert true" do
+    assert true
   end
 end

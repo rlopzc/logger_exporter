@@ -53,7 +53,7 @@ end
 
 ## Configuration
 
-By default, the timestamp sent for each log to the external service is in utc: `System.os_time(:nanosecond)`
+By default, the timestamp sent for each log to the external service is in UTC: `System.os_time(:nanosecond)`
 
 | option           | description                                                                                                   | default                                    |
 |------------------|---------------------------------------------------------------------------------------------------------------|--------------------------------------------|
@@ -64,8 +64,9 @@ By default, the timestamp sent for each log to the external service is in utc: `
 | host             | The host of the service without the path. The path is inferred by the exporter.                               | No default. Required                       |
 | app_name         | The name of the app to use as label.                                                                          | No default. Required                       |
 | environment_name | The name of the app to use as label.                                                                          | No default. Required                       |
-| send_to_http     | If set to false, the library will not make any actual API calls. This is useful for test or dev environments. | `true`                                       |
-| http_authh       | See below for configuration                                                                                   | No default                                 |
+| http_client      | Allows the selection of the HTTP client.                                                                      | `LoggerExporter.HttpClients.ReqClient`     |
+| send_to_http     | If set to false, the library will not make any actual API calls. This is useful for test or dev environments. | `true`                                     |
+| http_auth        | See below for configuration                                                                                   | No default                                 |
 
 
 ### HTPP Auth

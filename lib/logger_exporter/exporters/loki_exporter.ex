@@ -1,34 +1,32 @@
 defmodule LoggerExporter.Exporters.LokiExporter do
   @moduledoc """
   LokiExporter
-
-  Transforms the events in a struct that Loki understands
   """
 
   alias LoggerExporter.{Config, Event}
 
-  @behaviour LoggerExporter.Exporters.Exporter
+  @behaviour LoggerExporter.ExporterBehavior
 
   @impl true
   def headers do
-    []
+    [{"Content-Type", "application/json"}]
   end
 
   @impl true
   def body(events) do
-    values = Enum.map(events, &event_to_log/1)
+    logs = Enum.map(events, &event_to_log/1)
 
-    %{
+    Jason.encode!(%{
       streams: [
         %{
           stream: %{
             app: Config.app_name(),
             env: Config.environment_name()
           },
-          values: values
+          values: logs
         }
       ]
-    }
+    })
   end
 
   defp event_to_log(%Event{timestamp_ns: timestamp_ns, log_line: log_line}) do

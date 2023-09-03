@@ -1,4 +1,4 @@
-defmodule LoggerExporter.Formatters.Formatter do
+defmodule LoggerExporter.FormatterBehavior do
   @moduledoc """
   Behaviour that should be implemented by log formatters.
   Example implementation in `LoggerExporter.Formatters.BasicLogger`
@@ -10,8 +10,8 @@ defmodule LoggerExporter.Formatters.Formatter do
   @callback format_event(
               level :: Logger.level(),
               msg :: Logger.message(),
-              ts :: Logger.Formatter.time(),
-              md :: keyword(),
-              md_keys :: [atom] | :all
+              timestamp :: Logger.Formatter.time(),
+              log_metadata :: keyword(),
+              metadata_keys :: [atom] | :all
             ) :: String.t()
 end
