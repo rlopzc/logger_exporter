@@ -65,7 +65,7 @@ By default, the timestamp sent for each log to the external service is in utc: `
 | app_name         | The name of the app to use as label.                                                                          | No default. Required                       |
 | environment_name | The name of the app to use as label.                                                                          | No default. Required                       |
 | send_to_http     | If set to false, the library will not make any actual API calls. This is useful for test or dev environments. | `true`                                       |
-| http_autha       | See below for configuration                                                                                   | No default                                 |
+| http_auth        | See below for configuration                                                                                   | No default                                 |
 
 
 ### HTPP Auth
