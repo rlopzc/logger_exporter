@@ -74,7 +74,7 @@ defmodule LoggerExporter.Loggers.Plug do
             time_us = System.convert_time_unit(stop_time - start_time, :native, :microsecond)
             time_ms = div(time_us, 1000)
 
-            "method=#{conn.method} path=#{conn.request_path} params=#{params} status=#{conn.status} duration=#{time_ms}ms"
+            "method=#{conn.method} path=#{conn.request_path} status=#{conn.status} duration=#{time_ms}ms params=#{params}"
           end)
       end
 
