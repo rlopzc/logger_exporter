@@ -1,6 +1,8 @@
 defmodule LoggerExporter.Exporters.LokiExporter do
   @moduledoc """
   LokiExporter
+
+  https://grafana.com/docs/loki/latest/api/#push-log-entries-to-loki
   """
 
   alias LoggerExporter.{Config, Event}

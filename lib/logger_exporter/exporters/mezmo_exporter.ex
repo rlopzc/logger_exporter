@@ -1,6 +1,8 @@
 defmodule LoggerExporter.Exporters.MezmoExporter do
   @moduledoc """
   MezmoExporter
+
+  https://docs.mezmo.com/log-analysis-api#ingest
   """
 
   alias LoggerExporter.Event
