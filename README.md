@@ -184,6 +184,6 @@ The following chart shows which metadata you can expect for each event:
 | `:exception` | `:duration`    | `:events, :kind, :reason, :stacktrace` |
 
 Metadata
-* `:events` - the list of `LoggerExporter.Event` processed
-* `:status` - either `:ok` or `:error`
-* `:response` - information of the response. Is a `Finch.Response` struct
+* `:events` - the list of `LoggerExporter.Event` processed.
+* `:status` - either `:ok` or `:error`.
+* `:response` - information of the response.
