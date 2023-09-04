@@ -2,11 +2,11 @@ defmodule LoggerExporter.Batcher do
   @moduledoc """
   GenServer that batches the events in a `:queue`
 
-  Sends the batch to the HTTPClient
+  Sends the batch to the HTTPClient.
   """
   use GenServer
 
-  alias LoggerExporter.{Config, Event, HTTPClientWrapper}
+  alias LoggerExporter.{Config, Event, HttpClient}
 
   def start_link(_opts) do
     GenServer.start_link(__MODULE__, :queue.new(), name: __MODULE__)
@@ -50,7 +50,7 @@ defmodule LoggerExporter.Batcher do
   def handle_info(:process_batch, queue) do
     items = :queue.to_list(queue)
 
-    if items != [], do: HTTPClientWrapper.batch(items)
+    if items != [], do: HttpClient.send_batch(items)
 
     schedule_batch_send()
     {:noreply, :queue.new()}
