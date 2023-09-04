@@ -12,8 +12,7 @@ defmodule LoggerExporter.Supervisor do
   @impl true
   def init(_opts) do
     children = [
-      LoggerExporter.Batcher,
-      {Finch, name: LoggerExporterFinch}
+      LoggerExporter.Batcher
     ]
 
     Supervisor.init(children, strategy: :one_for_one)
