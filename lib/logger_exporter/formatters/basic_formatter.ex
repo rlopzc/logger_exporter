@@ -10,7 +10,7 @@ defmodule LoggerExporter.Formatters.BasicFormatter do
 
   @impl true
   def format_event(level, msg, timestamp, log_metadata, metadata_keys) do
-    default_formatter()
+    get_configured_formatter()
     |> Logger.Formatter.compile()
     |> Logger.Formatter.format(
       level,
@@ -21,9 +21,8 @@ defmodule LoggerExporter.Formatters.BasicFormatter do
     |> IO.chardata_to_string()
   end
 
-  defp default_formatter do
-    :logger
-    |> Application.get_env(:console)
+  defp get_configured_formatter do
+    (Application.get_env(:console, :logger) || [])
     |> Keyword.get(:format, @default_format)
   end
 end
