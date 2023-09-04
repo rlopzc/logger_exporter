@@ -27,7 +27,7 @@ defmodule LoggerExporter.Telemetry do
         _config
       ) do
     Logger.error(
-      "[LoggerExporter] Error. Check the LoggerExporter configuration. Response: #{inspect(response)}"
+      "[LoggerExporter] Error. Check the LoggerExporter configuration. http_response=#{inspect(response)}"
     )
   end
 
