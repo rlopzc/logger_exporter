@@ -1,3 +1,4 @@
+if Code.ensure_loaded?(Plug) do
 defmodule LoggerExporter.Loggers.Plug do
   @moduledoc """
   A plug for logging request information in the format:
@@ -89,3 +90,4 @@ defmodule LoggerExporter.Loggers.Plug do
     apply(mod, fun, [conn | args])
   end
 end
+  end
