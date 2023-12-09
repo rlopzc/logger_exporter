@@ -15,12 +15,12 @@ jobs:
             otp: '26.0'
 
           # One version before the last supported one.
-          - elixir: '1.14.5'
-            otp: '25.2'
+          - elixir: '1.14'
+            otp: '23.0'
 
           # Oldest supported Elixir/Erlang pair.
-          - elixir: '1.11.4'
-            otp: '21.3'
+          - elixir: '1.12'
+            otp: '22.0'
     steps:
       - uses: actions/checkout@v2
       - uses: erlef/setup-beam@v1
