@@ -32,10 +32,10 @@ defmodule LoggerExporter.MixProject do
       {:req, "~> 0.4.0"},
       {:jason, "~> 1.2"},
       {:telemetry, "~> 0.4.2 or ~> 1.0"},
-      {:plug, "~> 1.7"},
+      {:plug, "~> 1.7", optional: true},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
       {:ex_doc, "~> 0.27", only: :dev, runtime: false},
-      {:dialyxir, "~> 1.1.0", only: [:test, :dev], runtime: false}
+      {:dialyxir, "~> 1.1", only: [:test, :dev], runtime: false}
     ]
   end
 
