@@ -26,10 +26,22 @@ jobs:
             otp: '22.0'
     steps:
       - uses: actions/checkout@v2
+
       - uses: erlef/setup-beam@v1
+        id: beam
         with:
           otp-version: ${{matrix.otp}}
           elixir-version: ${{matrix.elixir}}
+
+      - uses: actions/cache@v3
+        with:
+          key: ${{ runner.os }}-elixir-${{ steps.beam.outputs.elixir-version }}-erlang-${{ steps.beam.outputs.otp-version }}-${{ hashFiles('**/mix.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-elixir-${{ steps.beam.outputs.elixir-version }}-erlang-${{ steps.beam.outputs.otp-version }}-
+          path: |
+            deps
+            _build
+
       - run: mix deps.get
       - run: mix compile
       - run: mix test
