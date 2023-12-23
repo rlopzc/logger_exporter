@@ -2,6 +2,9 @@ name: Elixir CI
 
 on: push
 
+env:
+  MIX_ENV: test
+
 jobs:
   test:
     runs-on: ubuntu-20.04
@@ -29,3 +32,4 @@ jobs:
           elixir-version: ${{matrix.elixir}}
       - run: mix deps.get
       - run: mix compile
+      - run: mix test
