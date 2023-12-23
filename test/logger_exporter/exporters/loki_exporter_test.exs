@@ -5,11 +5,6 @@ defmodule LoggerExporter.Exporters.LokiExporterTest do
 
   import LoggerExporter.EventFixtures
 
-  setup do
-    Application.put_env(:logger, LoggerExporter, app_name: :test_app, environment_name: :test)
-    :ok
-  end
-
   describe "headers" do
     test "application/json" do
       assert [{"Content-Type", "application/json"}] == LokiExporter.headers()
