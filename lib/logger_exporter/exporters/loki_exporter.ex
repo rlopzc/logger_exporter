@@ -9,12 +9,12 @@ defmodule LoggerExporter.Exporters.LokiExporter do
 
   @behaviour LoggerExporter.ExporterBehavior
 
-  @impl true
+  @impl LoggerExporter.ExporterBehavior
   def headers do
     [{"Content-Type", "application/json"}]
   end
 
-  @impl true
+  @impl LoggerExporter.ExporterBehavior
   def body(events) do
     logs = Enum.map(events, &event_to_log/1)
 
