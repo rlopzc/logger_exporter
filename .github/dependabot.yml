@@ -4,3 +4,10 @@ updates:
     directory: "/" # Location of package manifests
     schedule:
       interval: "daily"
+    reviewers:
+      - "rlopzc"
+    groups:
+      deps:
+        update-types:
+          - "minor"
+          - "patch"
