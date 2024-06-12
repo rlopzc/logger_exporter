@@ -24,11 +24,18 @@ defmodule LoggerExporter.Exporters.MezmoExporter do
   defp event_to_log(%Event{} = event) do
     timestamp_ms = System.convert_time_unit(event.timestamp_ns, :nanosecond, :millisecond)
 
+    meta =
+      case event.metadata |> Map.new() |> Jason.encode() do
+        {:ok, meta} -> meta
+        {:error, _error} -> ""
+      end
+
     %{
       timestamp: timestamp_ms,
       line: event.log_line,
       app: event.app_name,
-      level: event.level
+      level: event.level,
+      meta: meta
     }
   end
 end

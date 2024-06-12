@@ -13,7 +13,10 @@ defmodule LoggerExporter.Exporters.MezmoExporterTest do
 
   describe "body" do
     test "parses events and encodes it" do
-      events = [event_fixture(), event_fixture()]
+      events = [
+        event_fixture(metadata: [user_id: 1]),
+        event_fixture(metadata: [user_id: 2])
+      ]
 
       assert %{
                lines: [
@@ -21,13 +24,15 @@ defmodule LoggerExporter.Exporters.MezmoExporterTest do
                    timestamp: _timestamp1,
                    line: "Log line",
                    app: "logger_exporter_app",
-                   level: "info"
+                   level: "info",
+                   meta: ~s|{"user_id":1}|
                  },
                  %{
                    timestamp: _timestamp3,
                    line: "Log line",
                    app: "logger_exporter_app",
-                   level: "info"
+                   level: "info",
+                   meta: ~s|{"user_id":2}|
                  }
                ]
              } = Jason.decode!(MezmoExporter.body(events), keys: :atoms)
