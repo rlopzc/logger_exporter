@@ -13,18 +13,22 @@ defmodule LoggerExporter.Exporters.LokiExporterTest do
 
   describe "body" do
     test "parses events and encodes it" do
-      events = [event_fixture(), event_fixture()]
+      events = [
+        event_fixture(metadata: [user_id: 1]),
+        event_fixture(metadata: [user_id: 2])
+      ]
 
       assert %{
                streams: [
                  %{
                    stream: %{
                      app: "test_app",
-                     env: "test"
+                     env: "test",
+                     hostname: ~c"192"
                    },
                    values: [
-                     [_timestamp1, "Log line"],
-                     [_timestamp2, "Log line"]
+                     [_timestamp1, "Log line", %{user_id: "1"}],
+                     [_timestamp2, "Log line", %{user_id: "2"}]
                    ]
                  }
                ]
