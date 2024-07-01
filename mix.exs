@@ -30,7 +30,7 @@ defmodule LoggerExporter.MixProject do
 
   defp deps do
     [
-      {:req, "~> 0.4.0"},
+      {:req, "~> 0.5.1"},
       {:jason, "~> 1.2"},
       {:telemetry, "~> 0.4.2 or ~> 1.0"},
       {:plug, "~> 1.7", optional: true},
